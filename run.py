@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # seta o observar para usar o gerenciador de eventos no diretorio
     observer.schedule(event_handler, path = path)
     observer.start()
-    print('Iniciando a observação do diretório {path}')
+    print(f'Iniciando a observção do diretório -> {path}')
     try:
         while True:
             time.sleep(10)
