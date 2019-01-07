@@ -13,16 +13,18 @@ class DirEventHandler(FileSystemEventHandler):
         # anterior - 1 para deixar a contagem certa
 
         # remover arquivos ocultos da observacao
-        list_dir = [f for f in os.listdir(self.path) if not f.startswith('.')]
+        list_dir = [f for f in os.listdir(self.path) if not f.startswith('.') and f.endswith('.txt')]
         if len(list_dir) > 1:
             forehand_file_path = f'{self.path}/{sorted(list_dir)[-2]}'
             forehand_file_lines = self.tp.count_lines(forehand_file_path)
             start_line = forehand_file_lines - 1
         else:
             start_line = 7
-        print(start_line)
         parsed_content = self.tp.parse_content(event.src_path, start_line)
-        print(parsed_content)
+        return parsed_content
         
     def on_created(self, event): # quando o arquivo for criado no diretorio
         self.process(event)
+
+    def dispatch(self, event):
+        print("Foobar")
