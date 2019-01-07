@@ -1,3 +1,4 @@
+import os
 from watchdog.events import FileSystemEventHandler
 
 class DirEventHandler(FileSystemEventHandler):

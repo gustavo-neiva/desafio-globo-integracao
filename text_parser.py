@@ -1,3 +1,5 @@
+import datetime
+import time
 
 class TextParser:
     def __blocks(self, files, size=65536):
@@ -17,9 +19,6 @@ class TextParser:
             # definir a linha onde iniciar o parseamento da string
             for i, line in enumerate(f):
                 if i == start_line:
-                    break
-            for line in f:
-                if line.find('----') == 1:
                     break
             for line in f:
                 # selecionar pedaços da string a partir do indice
