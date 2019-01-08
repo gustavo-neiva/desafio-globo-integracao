@@ -5,10 +5,17 @@ import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(name)s- %(message)s')
+
+formatter = logging.Formatter('%(asctime)s:%(levelname)s: %(name)s - %(message)s')
+
 file_handler = logging.FileHandler('logs/parser.log')
 file_handler.setFormatter(formatter)
+
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+
 logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
 
 class TextParser:
     def __blocks(self, files, size=65536):
@@ -48,5 +55,5 @@ class TextParser:
                 duration_seconds = datetime.timedelta(hours=dt.tm_hour,minutes=dt.tm_min,seconds=dt.tm_sec).total_seconds()
                 if duration_seconds > 30:
                     result_list.append(dictionary)
-            logger.info(f'File: {file_path} /n -> {result_list}')
+            logger.info(f'File: {file_path} -> {result_list}')
             return(result_list)
