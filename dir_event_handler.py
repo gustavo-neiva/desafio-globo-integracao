@@ -25,6 +25,3 @@ class DirEventHandler(FileSystemEventHandler):
         
     def on_created(self, event): # quando o arquivo for criado no diretorio
         self.process(event)
-
-    def dispatch(self, event):
-        print("Foobar")
