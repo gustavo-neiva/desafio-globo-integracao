@@ -11,11 +11,13 @@ if __name__ == '__main__':
     # o diretorio à ser observador será passado como argumento ao rodar o script, ou o 
     # script sempre vai observar o proprio diretorio onde ele esta localizado
     path = sys.argv[1] if len(sys.argv) > 1 else '.'
-    logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s:%(levelname)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S',
-                    filename = 'logs/text_parser.log')
-    logging.info('Start logs')
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(name)s- %(message)s')
+    file_handler = logging.FileHandler('logs/errors.log')
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(logging.ERROR)
+    logger.addHandler(file_handler)
     observer = Observer() # instancia uma classe do observador do watchdog
     tp = TextParser() # instancia a classe do parser
     event_handler = DirEventHandler(tp, path) # cria o gerenciador de eventos
@@ -28,6 +30,5 @@ if __name__ == '__main__':
             time.sleep(10)
     except KeyboardInterrupt:
         observer.stop()
-        logging.info('Finish logs')
 
     observer.join()

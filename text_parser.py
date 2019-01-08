@@ -2,6 +2,14 @@ import datetime
 import time
 import logging
 
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(name)s- %(message)s')
+file_handler = logging.FileHandler('logs/parser.log')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
 class TextParser:
     def __blocks(self, files, size=65536):
         while True:
@@ -17,6 +25,7 @@ class TextParser:
     def parse_content(self, file_path, start_line = 0):
         with open(file_path, 'r', encoding="utf-8", errors='ignore') as f:
             result_list = []
+            logger.info(f'Reading {file_path}')
             # definir a linha onde iniciar o parseamento da string
             for i, line in enumerate(f):
                 if i == start_line:
@@ -39,5 +48,5 @@ class TextParser:
                 duration_seconds = datetime.timedelta(hours=dt.tm_hour,minutes=dt.tm_min,seconds=dt.tm_sec).total_seconds()
                 if duration_seconds > 30:
                     result_list.append(dictionary)
-            logging.info(result_list)
+            logger.info(f'File: {file_path} /n -> {result_list}')
             return(result_list)
