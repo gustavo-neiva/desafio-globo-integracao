@@ -1,5 +1,6 @@
 import datetime
 import time
+import logging
 
 class TextParser:
     def __blocks(self, files, size=65536):
@@ -38,4 +39,5 @@ class TextParser:
                 duration_seconds = datetime.timedelta(hours=dt.tm_hour,minutes=dt.tm_min,seconds=dt.tm_sec).total_seconds()
                 if duration_seconds > 30:
                     result_list.append(dictionary)
+            logging.info(result_list)
             return(result_list)

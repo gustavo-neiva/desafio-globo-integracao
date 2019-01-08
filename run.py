@@ -12,9 +12,10 @@ if __name__ == '__main__':
     # script sempre vai observar o proprio diretorio onde ele esta localizado
     path = sys.argv[1] if len(sys.argv) > 1 else '.'
     logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(message)s',
+                    format='%(asctime)s:%(levelname)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
-                    filename = f'{path}/text_parser.log')
+                    filename = 'logs/text_parser.log')
+    logging.info('Start logs')
     observer = Observer() # instancia uma classe do observador do watchdog
     tp = TextParser() # instancia a classe do parser
     event_handler = DirEventHandler(tp, path) # cria o gerenciador de eventos
@@ -27,5 +28,6 @@ if __name__ == '__main__':
             time.sleep(10)
     except KeyboardInterrupt:
         observer.stop()
+        logging.info('Finish logs')
 
     observer.join()
