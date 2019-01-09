@@ -1,33 +1,27 @@
 import aiohttp
 
 class Client():
-    async def post_cut(self, client):
-        async with client.post('http://google.com') as resp:
+    def __init__(self, cut_url, globo_play_url):
+        self.cut_url = cut_url
+        self.globo_play_url = globo_play_url
+        self.
+
+    async def post_cut(self, client, content):
+        async with client.post(self.cut_url) as resp:
             assert resp.status == 200
-            return await resp.text()
+            return await resp.json()
 
     async def get_cut(self, client):
-        async with client.get('http://python.org') as resp:
+        async with client.get(self.cut_url) as resp:
             assert resp.status == 200
-            return await resp.text()
+            return await resp.json()
 
     async def post_globo_play(self, client):
-        async with client.post('http://pudim.com.br') as resp:
+        async with client.post(self.globo_play_url) as resp:
             assert resp.status == 200
-            return await resp.text()
+            return await resp.json()
 
-    async def main(self):
+    async def main(self, content):
         async with aiohttp.ClientSession() as client:
             html = await self.get_cut(client)
-            print(html)
-
-    #POST videos a serem cortados - api/v1/corte
-    # - { "cuts" : [
-        # { "start_time": "timecode",
-        # "end_time": "timecode",
-        # "path": "path arquivo a ser salvo" }
-        #  ]
-    # }
-    # GET  status do corte e video api/v1/corte/:id a cada x tempo
-
-    # POST para api globo-play
+            print(html[1])
