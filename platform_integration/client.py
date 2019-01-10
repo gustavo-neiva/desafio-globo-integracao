@@ -1,9 +1,10 @@
 import aiohttp
 import time
-import logging
 from aiologger import Logger
 
-logger = Logger.with_default_handlers(name='my-logger')
+logger = Logger.with_default_handlers(name='client', 
+                                      file='platform_integration/logs/client.log',
+                                      format='%(asctime)s:%(levelname)s - %(message)s')
 
 class Client:
     def __init__(self, cut_url, globo_play_url, video_path):
