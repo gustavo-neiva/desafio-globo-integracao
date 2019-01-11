@@ -7,7 +7,7 @@ if __name__ == '__main__':
     print(f'Iniciando a observação do diretório -> {path}')
     try:
         while True:
-            time.sleep(10)
+            time.sleep(0.1)
     except KeyboardInterrupt:
         observer.stop()
 
