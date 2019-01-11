@@ -37,10 +37,11 @@ class TextParser:
     def generate_csv(self, dict_list):
         if not os.path.exists('publisher/parse_results'):
             os.makedirs('publisher/parse_results')
-        with open('publisher/parse_results/videos_to_cut.csv', 'a') as f:
+        with open('publisher/parse_results/filtered_videos.csv', 'a') as f:
             result_list = dict_list
-            headers = result_list[0].keys()
+            headers = [*result_list[0]]
             w = csv.DictWriter(f, delimiter=',', lineterminator='\n',fieldnames=headers)
+            w.writeheader()
             w.writerows(result_list)
 
     def parse_content(self, file_path, start_line = 0):
