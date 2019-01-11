@@ -1,6 +1,7 @@
 import datetime
 import time
 import logging
+import csv
 
 
 logger = logging.getLogger(__name__)
@@ -29,6 +30,13 @@ class TextParser:
             n_lines = sum(bl.count("\n") for bl in self.__blocks(f))
             return n_lines
 
+    def generate_csv(self, dict_list):
+        with open('publisher/to_cut/videos_to_cut.csv', 'a') as f:
+            result_list = dict_list
+            headers = result_list[0].keys()
+            w = csv.DictWriter(f, delimiter=',', lineterminator='\n',fieldnames=headers)
+            w.writerows(result_list)
+
     def parse_content(self, file_path, start_line = 0):
         with open(file_path, 'r', encoding="utf-8", errors='ignore') as f:
             result_list = []
@@ -55,5 +63,6 @@ class TextParser:
                 duration_seconds = datetime.timedelta(hours=dt.tm_hour,minutes=dt.tm_min,seconds=dt.tm_sec).total_seconds()
                 if duration_seconds > 30:
                     result_list.append(dictionary)
+            self.generate_csv(result_list)
             logger.info(f'File: {file_path} -> {result_list}')
             return(result_list)
