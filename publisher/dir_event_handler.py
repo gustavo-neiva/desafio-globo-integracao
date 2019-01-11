@@ -23,16 +23,18 @@ class DirEventHandler(FileSystemEventHandler):
         else:
             start_line = 7
         parsed_content = self.tp.parse_content(event.src_path, start_line)
-        self.send_message(parsed_content)
+        for content in parsed_content:
+            dictionary = { "to_cut": content }
+            self.send_message(dictionary)
         
     def on_created(self, event): # quando o arquivo for criado no diretorio
         self.process(event)
 
-    def send_message(self, parsed_content):
+    def send_message(self, content):
         connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
         channel = connection.channel()
         channel.queue_declare(queue='to_cut')
-        message = json.dumps(parsed_content)
+        message = json.dumps(content)
         channel.basic_publish(exchange='',
                             routing_key='to_cut',
                             body=message)

@@ -1,4 +1,5 @@
 from .client import Client
+import json
 import pika
 
 cut_url = 'https://jsonplaceholder.typicode.com/posts' # api de exemplo para testes
@@ -11,7 +12,9 @@ def main():
     channel.queue_declare(queue='to_cut')
 
     def callback(ch, method, properties, body):
-        print(" [x] Received %r" % body)
+        print(" [x] Recebido %r" % body)
+        json_body = json.loads(body)
+        client.post_cut(json_body)
 
     channel.basic_consume(callback,
                         queue='to_cut',
