@@ -1,12 +1,10 @@
 import os
-import asyncio
 from watchdog.events import FileSystemEventHandler
 
 class DirEventHandler(FileSystemEventHandler):
-    def __init__(self, tp, path, client):
+    def __init__(self, tp, path):
         self.tp = tp
         self.path = path
-        self.client = client
 
     def process(self, event):      
         # o conteudo informativo começa a partir da linha 7
@@ -28,7 +26,5 @@ class DirEventHandler(FileSystemEventHandler):
     def on_created(self, event): # quando o arquivo for criado no diretorio
         self.process(event)
 
-    def to_client(self, parsed_content):
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(self.client.request(parsed_content))
+    def to_exchange(self, parsed_content):
+        pass

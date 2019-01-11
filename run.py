@@ -1,4 +1,4 @@
-from platform_integration import observer, event_handler, path
+from publisher import observer, event_handler, path
 import time
 
 if __name__ == '__main__':
