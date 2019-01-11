@@ -1,50 +1,15 @@
-# Project Title
+# Projeto de integração de mídias
 
-One Paragraph of project description goes here
+O projeto de integração foi baseado na arquitetura de um publisher que roda o parser e cria mensagens a partir dos videos que precisam ser cortados. O RabbitMQ atua como um broker para entregar as mensagens para o worker, que é quem irá fazer os requests para as APIs externas.
 
-## Getting Started
+A ideia é fazer um sistema que possa ser escalonado, já que o tempo de corte do video e o download do mesmo bloquearia a continuidade do script, portanto um sistema de fila com uma distribuição das tarefas permitirá o escalonamento da operação ao se adicionar novos workers para operar o sistema.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+## Iniciando
 
-### Prerequisites
 
-What things you need to install the software and how to install them
+### Pre-requisitos
 
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+O RabbitMQ precisa estar instalado e com o servidor rodando para o broker funcionar.
 
 ## License
 
