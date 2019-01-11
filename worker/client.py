@@ -27,12 +27,13 @@ class Client:
         self.file_name = ""
         self.duration = "00:00:30"
         self.title = ""
+        self.video_code = ""
 
     def content_info(self, content):
         video_info = content['to_cut']
-        self.file_name = f'{video_info["title"].replace(" ", "_")}.mp4'
+        self.file_name = f'{video_info["reconcile_key"]}.mp4'
         self.duration = f'{video_info["duration"]}'
-        self.title = f'{video_info["duration"]}'
+        self.title = f'{video_info["title"]}'
 
     def post_cut(self, content):
         path = { "video_path": self.video_path }
@@ -46,7 +47,9 @@ class Client:
 
 
     def get_cut(self, id):
-        r = requests.get(f'{self.cut_url}/{id}', stream = True )
+        # r = requests.get(f'{self.cut_url}/{id}', stream = True )
+        test_url = 'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_30mb.mp4'
+        r = requests.get(test_url, stream = True )        
         logger.info(f'GET cut title: {self.title} status:{r.status_code}')
         if r.status_code == 202:
             time.sleep(10)

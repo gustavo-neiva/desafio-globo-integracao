@@ -1,10 +1,12 @@
 from .client import Client
 import json
 import pika
+import sys
 
 cut_url = 'https://jsonplaceholder.typicode.com/posts' # api de exemplo para testes
 globo_play_url = 'https://jsonplaceholder.typicode.com/posts'
-video_path = "path/to/save/video"
+default_path = "/home/storm000634/code/luizgzn/desafio-globo-integracao/tests/videos"
+video_path = sys.argv[1] if len(sys.argv) > 1 else default_path
 client = Client(cut_url, globo_play_url, video_path) # instancia a class do http client
 def main():
     connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
