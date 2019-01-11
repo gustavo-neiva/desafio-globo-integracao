@@ -40,12 +40,11 @@ class TextParser:
         filename = 'publisher/parse_results/filtered_videos.csv'
         file_exists = os.path.isfile(filename)
         with open('publisher/parse_results/filtered_videos.csv', 'a') as f:
-            result_list = dict_list
-            headers = [*result_list[0]]
+            headers = [*dict_list[0]]
             w = csv.DictWriter(f, delimiter=',', lineterminator='\n',fieldnames=headers)
             if not file_exists:
                 w.writeheader()
-            w.writerows(result_list)
+            w.writerows(dict_list)
 
     def parse_content(self, file_path, start_line = 0):
         with open(file_path, 'r', encoding="utf-8", errors='ignore') as f:
@@ -73,6 +72,7 @@ class TextParser:
                 duration_seconds = datetime.timedelta(hours=dt.tm_hour,minutes=dt.tm_min,seconds=dt.tm_sec).total_seconds()
                 if duration_seconds > 30:
                     result_list.append(dictionary)
-            self.generate_csv(result_list)
+            if result_list:
+                self.generate_csv(result_list)
             logger.info(f'File: {file_path} -> {result_list}')
             return(result_list)
