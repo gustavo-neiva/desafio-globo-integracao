@@ -1,28 +1,62 @@
 import requests
+import time
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(asctime)s:%(levelname)s - %(message)s')
+
+if not os.path.exists('worker/logs'):
+    os.makedirs('worker/logs')
+
+file_handler = logging.FileHandler('worker/logs/client.log')
+file_handler.setFormatter(formatter)
+
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
 class Client:
     def __init__(self, cut_url, globo_play_url, video_path):
         self.cut_url = cut_url
         self.globo_play_url = globo_play_url
         self.video_path = video_path
+        self.file_name = ""
+        self.duration = "00:00:30"
+        self.title = ""
+
+    def content_info(self, content):
+        video_info = content['to_cut']
+        self.file_name = f'{video_info['title'].replace(" ", "_")}.mp4'
+        self.duration = f'{video_info['duration']}'
+        self.title = f'{video_info['duration']}'
 
     def post_cut(self, content):
-        path = { "video_path": self.video_path}
+        path = { "video_path": self.video_path }
         content.update(path)
-        r = requests.post(self.cut_url, data = content)
-        r.json()
-        # breakpoint()
-        # to_cut = { "video_path": path,
-        #               "to_cut": content}
-        # client.post(self.cut_url, data=to_cut) as resp:
-        # resp.json()
+        r = requests.post(self.cut_url, params = content)
+        logger.info(f'POST cut status:{r.status_code} -> {r.json()}')
+        self.content_info(content)
+        # Checa o retorno do POST e so envia o get quando a criação do job form bem
+        if r.status_code == 201:
+            self.get_cut(r.json()['id'])
+
 
     def get_cut(self, id):
-        pass
-        # client.get(f'{self.cut_url}/{id}') as resp:
-        #     resp.content.read(chunk_size)
+        r = requests.get(f'{self.cut_url}/{id}', stream = True )
+        if r.status_code == 202:
+            time.sleep(10)
+            self.get_cut(id)
+        if r.status_code == 200:
+            file_full_path = f'{self.video_path}/{self.file_name}'
+            with open(file_full_path, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=1024): 
+                    if chunk: 
+                        f.write(chunk)
+                logger.info(f'VIDEO DOWNLOAD {file_full_path}')
+            self.post_globo_play(self.file_name)
 
-    def post_globo_play(self):
-        pass
-        # client.post(self.globo_play_url) as resp:
-        #     resp.json()
+    def post_globo_play(self, file_name):
+        body = { "duration": self.duration, "title": self.title, "file_name": self.file_name}
+        r = requests.post(self.globo_play_url, params = body)

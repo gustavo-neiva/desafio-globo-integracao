@@ -2,6 +2,7 @@ import datetime
 import time
 import logging
 import csv
+import os
 
 
 logger = logging.getLogger(__name__)
@@ -9,6 +10,9 @@ logger.setLevel(logging.INFO)
 
 formatter = logging.Formatter('%(asctime)s:%(levelname)s - %(message)s')
 
+if not os.path.exists('publisher/logs'):
+    os.makedirs('publisher/logs')
+    
 file_handler = logging.FileHandler('publisher/logs/parser.log')
 file_handler.setFormatter(formatter)
 
@@ -31,7 +35,9 @@ class TextParser:
             return n_lines
 
     def generate_csv(self, dict_list):
-        with open('publisher/to_cut/videos_to_cut.csv', 'a') as f:
+        if not os.path.exists('publisher/parse_results'):
+            os.makedirs('publisher/parse_results')
+        with open('publisher/parse_results/videos_to_cut.csv', 'a') as f:
             result_list = dict_list
             headers = result_list[0].keys()
             w = csv.DictWriter(f, delimiter=',', lineterminator='\n',fieldnames=headers)
