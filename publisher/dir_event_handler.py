@@ -1,4 +1,6 @@
 import os
+import pika
+import json
 from watchdog.events import FileSystemEventHandler
 
 class DirEventHandler(FileSystemEventHandler):
@@ -21,10 +23,18 @@ class DirEventHandler(FileSystemEventHandler):
         else:
             start_line = 7
         parsed_content = self.tp.parse_content(event.src_path, start_line)
-        self.to_client(parsed_content)
+        self.send_message(parsed_content)
         
     def on_created(self, event): # quando o arquivo for criado no diretorio
         self.process(event)
 
-    def to_exchange(self, parsed_content):
-        pass
+    def send_message(self, parsed_content):
+        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue='to_cut')
+        message = json.dumps(parsed_content)
+        channel.basic_publish(exchange='',
+                            routing_key='to_cut',
+                            body=message)
+        print(f"[x] Eviado - {message}")
+        connection.close()
