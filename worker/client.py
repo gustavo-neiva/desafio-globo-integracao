@@ -1,5 +1,7 @@
 import requests
 import time
+import logging
+import os
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -28,15 +30,15 @@ class Client:
 
     def content_info(self, content):
         video_info = content['to_cut']
-        self.file_name = f'{video_info['title'].replace(" ", "_")}.mp4'
-        self.duration = f'{video_info['duration']}'
-        self.title = f'{video_info['duration']}'
+        self.file_name = f'{video_info["title"].replace(" ", "_")}.mp4'
+        self.duration = f'{video_info["duration"]}'
+        self.title = f'{video_info["duration"]}'
 
     def post_cut(self, content):
         path = { "video_path": self.video_path }
         content.update(path)
         r = requests.post(self.cut_url, params = content)
-        logger.info(f'POST cut status:{r.status_code} -> {r.json()}')
+        logger.info(f'POST cut - title: {self.title} status:{r.status_code} -> {r.json()}')
         self.content_info(content)
         # Checa o retorno do POST e so envia o get quando a criação do job form bem
         if r.status_code == 201:
@@ -45,6 +47,7 @@ class Client:
 
     def get_cut(self, id):
         r = requests.get(f'{self.cut_url}/{id}', stream = True )
+        logger.info(f'GET cut title: {self.title} status:{r.status_code}')
         if r.status_code == 202:
             time.sleep(10)
             self.get_cut(id)
