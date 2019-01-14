@@ -58,17 +58,23 @@ Para iniciar o worker:
 $ python /path/repositorio/run_worker.py
 ```
 
-## Testes
+## Testes (WIP)
 
-Para rodar os testes:
+Para rodar os testes utilizando todas as partes do projeto é necessário estar com um servidor do RabbitMQ operando em localhost no momento de inicialização dos testes.
+```
+$ sudo rabbitmq-server
+```
+Também precisa iniciar o publisher enviando o path do diretorio dos arquivos de texto que estão contidos na pastar tests/folder_test
 
 ```
+$ python run_publisher.py path/onde/foi/baixado/tests/folder_test
 $ python /path/arquivo/run_tests.py
 ```
-
+Assim pode-se observar o parser funcionando e as mensagens sendo encaminhadas. O mock das API's estão bem aquém do que eu queria para fazer uma demonstração dos workers.
 ## TO DO
 
 - Melhorar e aumentar os cases de testes tanto do parser quanto do client como do funcionamento do broker
+- Automatizar os testes
 - Definir um sistema de deploy e procurar fazê-lo de uma maneira integrada e automatizada.
 - Aferir as etapas da solução e procurar otimizá-la. Talvez configurar algumas operações para funcionar em multi-threading ou então utilizar a biblioteca de operações assíncronas para aumentar a capacidade de um worker realizar requests simultâneos.
 - Transformar ou integrar a solução em um web app para que um leigo possa manter, gerir, aferir e observar a operação da integração de mídias.
