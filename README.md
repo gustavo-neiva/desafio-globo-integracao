@@ -18,6 +18,7 @@ Utiliza a biblioteca [watchdog]('https://github.com/gorakhargosh/watchdog') para
 
 O broker utilizado é o RabbitMQ e o worker será o cliente que irá fazer os requests para as APIs externas e fará o trabalho de baixar e organizar os vídeos.
 
+Ao ser parseado, o conteúdo que será cortado é adicionado à um arquivo .csv para poder ser consultado conforme a necessidade. Além disso tanto as operações de parseamento como o cliente contém logs para observar o que acontece intermanete no software.
 
 ### Principais vantagens do padrão
 
@@ -33,7 +34,37 @@ A solução necessitaria de, pelo menos, três servidores atuando simultaneament
 
 O RabbitMQ precisa estar instalado e com o servidor rodando em localhost para o broker funcionar no ambiente de desenvolvimento.
 
-A solução 
+A solução foi desenvolvida utilizando a versão 3.7.2 do Pyhton
+
+## Instalação
+
+Basta clonar o repositório e rodar os scripts separadamente. 
+
+Para rodar o publisher utiliza-se o comando:
+
+´´´
+$ python /path/repositorio/run_publisher.py /path/diretorio/observado
+´´´
+
+Para ativar o broker depois de ter instalado o RabbitMQ:
+
+´´´
+$ sudo rabbitmq-server
+´´´
+
+Para iniciar o worker:
+
+´´´
+$ python /path/repositorio/run_worker.py
+´´´
+
+## Testes
+
+Para rodar os testes:
+
+´´´
+$ python /path/arquivo/run_tests.py
+´´´
 
 ## TO DO
 
