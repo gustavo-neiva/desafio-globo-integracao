@@ -13,7 +13,6 @@ class DirEventHandler(FileSystemEventHandler):
         # como cada novo arquivo contem as mesmas linhas do arquvio anterior mais as novas informaçoes
         # a linha pelo qual o parser deve iniciar é igual ao número de linhas do arquivo
         # anterior - 1 para deixar a contagem certa
-
         # remover arquivos ocultos da observacao e contar apenas os .txt
         list_dir = [f for f in os.listdir(self.path) if not f.startswith('.') and f.endswith('.txt')]
         if len(list_dir) > 1:
@@ -25,12 +24,14 @@ class DirEventHandler(FileSystemEventHandler):
         parsed_content = self.tp.parse_content(event.src_path, start_line)
         for content in parsed_content:
             dictionary = { "to_cut": content }
+            # envia a mensagem com o conteúdo a ser cortado
             self.send_message(dictionary)
         
-    def on_created(self, event): # quando o arquivo for criado no diretorio
+    def on_created(self, event): # quando o arquivo for criado no diretorio ativa a funcao process
         self.process(event)
 
     def send_message(self, content):
+        # Conecta ao canal do broker e envia o conteudo a ser cortado para a fila
         connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
         channel = connection.channel()
         channel.queue_declare(queue='to_cut')
