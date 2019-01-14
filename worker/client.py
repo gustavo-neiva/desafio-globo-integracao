@@ -41,17 +41,18 @@ class Client:
         r = requests.post(self.cut_url, params = content)
         logger.info(f'POST cut - title: {self.title} status:{r.status_code} -> {r.json()}')
         self.content_info(content)
-        # Checa o retorno do POST e so envia o get quando a criação do job form bem
+        # Checa o retorno do POST e so envia o get quando a criação do job for bem sucedida
         if r.status_code == 201:
+            # A api retorna a id do job de corte
             self.get_cut(r.json()['id'])
+        return r
 
 
     def get_cut(self, id):
-        # r = requests.get(f'{self.cut_url}/{id}', stream = True )
-        test_url = 'https://sample-videos.com/video123/mp4/240/big_buck_bunny_240p_30mb.mp4'
-        r = requests.get(test_url, stream = True )        
+        r = requests.get(f'{self.cut_url}/{id}', stream = True )
         logger.info(f'GET cut title: {self.title} status:{r.status_code}')
         if r.status_code == 202:
+            logger.info(f'GET cut title: {self.title} status:{r.status_code}, ainda processando...')
             time.sleep(10)
             self.get_cut(id)
         if r.status_code == 200:
@@ -62,6 +63,8 @@ class Client:
                         f.write(chunk)
                 logger.info(f'VIDEO DOWNLOAD {file_full_path}')
             self.post_globo_play(self.file_name)
+        else:
+            return r
 
     def post_globo_play(self, file_name):
         body = { "duration": self.duration, "title": self.title, "file_name": self.file_name}
