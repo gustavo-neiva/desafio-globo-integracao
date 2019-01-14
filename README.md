@@ -12,21 +12,32 @@ O principal desafio é conseguir criar um sistema de integração escalável e q
 
 A ideia é fazer um sistema que possa funcionar assíncronamente, onde o tempo de espera dos requests do corte e do download do vídeo não bloqueiem a continuação da observação da grade e envio de novos programas.
 
-A solução baseia-se no padrão Publisher-Subscriber, onde o publisher monitora um determinado diretório à espera de novos arquivos '.txt' que serão adicionados pelo sistema que cataloga a grade televisiva. Portanto um sistema de fila com uma distribuição das tarefas permitirá o escalonamento da operação ao se subscrever novos workers para realizar o trabalho conforme o aumento da necessidade.
+A solução baseia-se no padrão de filas de mensagens, onde o publisher monitora um determinado diretório à espera de novos arquivos '.txt' que serão adicionados pelo sistema que cataloga a grade televisiva. Portanto um sistema de fila com uma distribuição das tarefas permitirá o escalonamento da operação ao se subscrever novos workers para realizar o trabalho conforme o aumento da necessidade.
 
-Utiliza a biblioteca [watchdog]('https://github.com/gorakhargosh/watchdog') para monitorar um diretório que será defindo por quem ativar o script.O  arquivo de texto é parseado e o conteúdo com uma duração maior de 30 segudos é selecionado e é enviada uma mensagem com os dados desse conteúdo ao broker que redistribuirá a mensagem para os subscriber.
+Utiliza a biblioteca [watchdog]('https://github.com/gorakhargosh/watchdog') para monitorar um diretório que será defindo por quem ativar o script.O  arquivo de texto é parseado e o conteúdo com uma duração maior de 30 segudos é selecionado e é enviada uma mensagem com os dados desse conteúdo ao broker que redistribuirá a mensagem para os clientes.
 
-O broker utilizado é o RabbitMQ e o subscriber será o cliente que irá fazer os requests para as APIs externas e fará o trabalho de baixar e organizar os vídeos.
-
-
-## Iniciando
+O broker utilizado é o RabbitMQ e o worker será o cliente que irá fazer os requests para as APIs externas e fará o trabalho de baixar e organizar os vídeos.
 
 
-### Pre-requisitos
+### Principais vantagens do padrão
 
-O RabbitMQ precisa estar instalado e com o servidor rodando para o broker funcionar.
+A principal vantagem é a possibilidade de fazer o serviço que monitora a grade televisiva continuar selecionado os vídeos de corte independentemente do trabalho de esperar o corte do video e o download do arquivo. Além disso a solução torna-se escalonável pois caso haja necessidade de aumentar o volume de requests precisa-se apenas adicionar novos workers para receber os trabalhos que estarão na fila.
 
-## License
+Além disso o sistema é modularizado, o que facilita o desenvolvimento dos pedaços do sistema independentemente, diminuindo muito a chance de propagar bugs para outras partes do sistema.
 
+### Principais desvantagens do padrão
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+A solução necessitaria de, pelo menos, três servidores atuando simultaneamente. Um que ficará responsável pelo publisher, outro para rodar o broker e outro(s) para realizar os requests. Além disso o controle das mensagens e dos callbacks precisa ser controlado e testado para se evitar erros na comunicação entre os operadores do sistema.
+
+## Pré-requisitos
+
+O RabbitMQ precisa estar instalado e com o servidor rodando em localhost para o broker funcionar no ambiente de desenvolvimento.
+
+A solução 
+
+## TO DO
+
+- Melhorar e aumentar os cases de testes tanto do parser quanto do client como do funcionamento do broker
+- Definir um sistema de deploy e procurar fazê-lo de uma maneira integrada e automatizada.
+- Aferir as etapas da solução e procurar otimizá-la. Talvez configurar algumas operações para funcionar em multi-threading ou então utilizar a biblioteca de operações assíncronas para aumentar a capacidade de um worker realizar requests simultâneos.
+- Transformar ou integrar a solução em um web app para que um leigo possa manter, gerir, aferir e observar a operação da integração de mídias.
