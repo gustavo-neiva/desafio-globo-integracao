@@ -1,18 +1,23 @@
 import unittest
 from tests import worker
-# from .publisher import Publisher
+from tests import publisher
+import time
 
 def main():
-    # initialize the test suite
+    # incializa o suite de testes
     loader = unittest.TestLoader()
     suite  = unittest.TestSuite()
 
-    # add tests to the test suite
+    # adiciona o teste ao suite
     suite.addTests(loader.loadTestsFromModule(worker))
-    # suite.addTests(loader.loadTestsFromModule(publisher))
-
-    # initialize a runner, pass it your suite and run it
+    # limpa a pasta folder_test, roda o script que simula a criação dos 
+    # e depois limpa a pasta novamente
+    publisher.remove_files()
+    time.sleep(1)
+    publisher.main()
+    publisher.remove_files()
+    # inicializar o runner, passa o teste e roda
     runner = unittest.TextTestRunner(verbosity=3)
-    result = runner.run(suite)
+    runner.run(suite)
 
 
