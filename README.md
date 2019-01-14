@@ -42,29 +42,29 @@ Basta clonar o repositório e rodar os scripts separadamente.
 
 Para rodar o publisher utiliza-se o comando:
 
-´´´
+```
 $ python /path/repositorio/run_publisher.py /path/diretorio/observado
-´´´
+```
 
 Para ativar o broker depois de ter instalado o RabbitMQ:
 
-´´´
+```
 $ sudo rabbitmq-server
-´´´
+```
 
 Para iniciar o worker:
 
-´´´
+```
 $ python /path/repositorio/run_worker.py
-´´´
+```
 
 ## Testes
 
 Para rodar os testes:
 
-´´´
+```
 $ python /path/arquivo/run_tests.py
-´´´
+```
 
 ## TO DO
 
