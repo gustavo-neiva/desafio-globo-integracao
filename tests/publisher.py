@@ -24,11 +24,3 @@ def main():
 def remove_files():
     shutil.rmtree(folder_2)
     makedirs(folder_2)
-
-if __name__ == '__main__':
-    while True:
-        user_input = input("Pressione ENTER para iniciar o teste, ESPAÇO + ENTER para resetar e CTRL + C para parar")
-        if user_input == "":
-            main()
-        if user_input == " ":
-            remove_files()

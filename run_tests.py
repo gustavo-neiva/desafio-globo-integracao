@@ -1,4 +1,4 @@
-import unittest
-import .test.all_tests
-testSuite = test.all_tests.create_test_suite()
-text_runner = unittest.TextTestRunner().run(testSuite)
+from tests import main
+
+if __name__ == '__main__':
+    main()
