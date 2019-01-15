@@ -38,6 +38,9 @@ class DirEventHandler(FileSystemEventHandler):
         message = json.dumps(content)
         channel.basic_publish(exchange='',
                             routing_key='to_cut',
-                            body=message)
+                            body=message,
+                            properties=pika.BasicProperties(
+                            delivery_mode = 2
+                            ))
         print(f"[x] Eviado - {message}")
         connection.close()
