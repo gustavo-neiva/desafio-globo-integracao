@@ -1,0 +1,12 @@
+﻿Log Output - Marina Text AsRun v1.0
+Filename: 'B) REDE - ASRUN 20181216_000000 Marina.txt'
+Channel: 'A) REDE HD'
+From: 16/12/18 01:00:00 to 17/12/18 01:00:00
+Created : 16/12/18 00:38:29
+
+ TYPE START TIME             END TIME               MEDIA ID                         EVENT                TITLE                            SOM         SEGMENT                          DURATION    START TYPE   STRT OFFSET END TYPE     END OFFSET  DEVICE STREAM                    RECONCILE KEY                    HOUSE ID                         STATUS                          
+ ---- ---------------------- ---------------------- -------------------------------- -------------------- -------------------------------- ----------- -------------------------------- ----------- ------------ ----------- ------------ ----------- -------------------------------- -------------------------------- -------------------------------- ----------
+ P    16/12/2018 00:51:54;16 16/12/2018 01:38:24;03 K0021473                         Media Event          SUP - (DES)ENCONTRO PERFEITO - S 00:00:20;00 Media                            00:46:29;15 Sequential               Duration                 A) SRV2_REDE                     20181215234                                                       Completed 
+ P    16/12/2018 01:38:24;03 16/12/2018 01:38:34;08 CM182921                         Media Event          RING PULL 01 DE 05               00:00:06;29 Media                            00:00:10;05 Sequential               Duration                 A) SRV2_REDE                     201812151114                                                      Completed 
+ P    16/12/2018 01:38:34;08 16/12/2018 01:38:49;11 CM155244                         Media Event          RN MANIFESTO 1 DE 5              00:00:06;29 Media                            00:00:15;03 Sequential               Duration                 A) SRV2_REDE                     201812151116                                                      Completed 
+ P    16/12/2018 01:38:49;11 16/12/2018 01:39:19;15 CM179364                         Media Event          RING PULL                        00:00:06;28 Media                            00:00:30;02 Sequential               Duration                 A) SRV2_REDE                     201812151118                                                      Completed 

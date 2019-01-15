@@ -16,11 +16,14 @@ folder_1 = sys.argv[1] if len(sys.argv) > 1 else f'{base_dir}/folder_full'
 folder_2 = sys.argv[2] if len(sys.argv) > 1 else f'{base_dir}/folder_test'
 
 def main():
+    remove_files()
+    time.sleep(1)
     files = [f for f in sorted(listdir(folder_1)) if isfile(join(folder_1, f))]
     for f in files:
         print(f'Movendo o arquivo {folder_1}/{f} para a pasta a ser observada')
         shutil.copy(f'{folder_1}/{f}', f'{folder_2}/{f}')
         time.sleep(8)
+    remove_files()    
 
 def remove_files():
     shutil.rmtree(folder_2)
