@@ -71,6 +71,7 @@ $ python run_publisher.py path/onde/foi/baixado/tests/folder_test
 $ python /path/arquivo/run_tests.py
 ```
 Assim pode-se observar o parser funcionando e as mensagens sendo encaminhadas. O mock das API's estão bem aquém do que eu queria para fazer uma demonstração dos workers.
+
 ## TO DO
 
 - Melhorar e aumentar os cases de testes tanto do parser quanto do client como do funcionamento do broker
